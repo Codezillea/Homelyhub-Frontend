@@ -1,23 +1,39 @@
-import logo from './logo.svg';
 import './App.css';
+import { Flip, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+
+import { AllRoutes } from './routes/AllRoutes';
+import { userActions } from './Store/User/user-slice';
+import { currentUser } from './Store/User/user-action';
+
 
 function App() {
+
+
+  const dispatch = useDispatch();
+  const { errors } = useSelector((state) =>  state.user);
+  useEffect(()=>{
+    if(errors){
+      dispatch(userActions.clearError());
+    }
+    dispatch(currentUser());
+  }, [errors, dispatch]);
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     
+       <AllRoutes/>
+        <ToastContainer 
+       position='bottom-center'
+       draggable={true}
+       transition={Flip}
+       autoClose={3000}
+       />
+    
     </div>
   );
 }
